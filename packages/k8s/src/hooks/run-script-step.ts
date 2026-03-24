@@ -6,7 +6,6 @@ import { execCpFromPod, execCpToPod, execPodStep } from '../k8s'
 import { writeRunScript, sleep, listDirAllCommand } from '../k8s/utils'
 import { JOB_CONTAINER_NAME } from './constants'
 import { dirname } from 'path'
-import * as shlex from 'shlex'
 
 export async function runScriptStep(
   args: RunScriptStepArgs,
@@ -80,7 +79,7 @@ export async function runScriptStep(
 
   try {
     await execPodStep(
-      ['sh', '-c', shlex.quote(setupCommands.join(' && '))],
+      ['sh', '-c', setupCommands.join(' && ')],
       state.jobPod,
       JOB_CONTAINER_NAME
     )
