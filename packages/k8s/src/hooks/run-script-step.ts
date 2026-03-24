@@ -71,6 +71,23 @@ export async function runScriptStep(
     throw new Error(`failed to merge temp dirs: ${message}`)
   }
 
+  // Copy GitHub directories from temp to /github (PR 287 fix: event.json not copied to /github/workflow)
+  const setupCommands = [
+    'mkdir -p /github',
+    'cp -r /__w/_temp/_github_home /github/home',
+    'cp -r /__w/_temp/_github_workflow /github/workflow'
+  ]
+
+  try {
+    await execPodStep(
+      ['sh', '-c', shlex.quote(setupCommands.join(' && '))],
+      state.jobPod,
+      JOB_CONTAINER_NAME
+    )
+  } catch (err) {
+    core.debug(`Failed to copy GitHub directories: ${JSON.stringify(err)}`)
+  }
+
   // Execute the entrypoint script
   args.entryPoint = 'sh'
   args.entryPointArgs = ['-e', containerPath]
