@@ -1,1 +1,3 @@
-* @actions/actions-compute @nikola-jokic
+# Internal owners for the EasyPost fork of actions/runner-container-hooks.
+# Upstream owners (@actions/actions-compute) have no access to this fork.
+* @easypost/dev-tools
